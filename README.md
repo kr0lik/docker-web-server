@@ -22,3 +22,5 @@ sudo docker-compose up -d
 ``` 
 
 4 . Add 127.0.0.1 web.local to your hosts file
+
+5. Go to http://web.local
