@@ -1,0 +1,39 @@
+version: '3'
+
+services:
+    nginx:
+        image: nginx:latest
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - ./hosts:/etc/nginx/conf.d
+            - ./www:/var/www
+            - ./logs:/var/log/nginx
+        links:
+            - php
+    php:
+        image: php:7.2-fpm
+        #build: ./images/php
+        links:
+            - mysql
+            - pgsql
+        volumes:
+            - ./www:/var/www
+    mysql:
+        image: mysql:latest
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: local
+    pgsql:
+        image: postgres:latest
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./pgsql:/var/lib/mysql
+        environment:
+            POSTGRES_PASSWORD: local
+

@@ -1,0 +1,4 @@
+/www/*
+/mysql/*
+/pgsql/*
+/logs/*
