@@ -8,18 +8,18 @@ services:
             - "443:443"
         volumes:
             - ./hosts:/etc/nginx/conf.d
-            - ./www:/var/www
+            - ./www:/var/www/html
             - ./logs:/var/log/nginx
         links:
             - php
     php:
-        image: php:7.2-fpm
-        #build: ./images/php
+        #image: php:7.2-fpm
+        build: ./images/php
         links:
             - mysql
             - pgsql
         volumes:
-            - ./www:/var/www
+            - ./www:/var/www/html
     mysql:
         image: mysql:latest
         ports:
