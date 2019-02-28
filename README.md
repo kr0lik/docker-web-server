@@ -1,4 +1,4 @@
-# Ready Web Server from docker
+# Ready Web Server on docker
 
 This is test of staurt up web server for my home works by docker.
 
