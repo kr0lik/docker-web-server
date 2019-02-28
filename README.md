@@ -11,19 +11,19 @@ Tested on debian linux.
 
 To install this server you need:
 
-1 . Install [docker](https://docs.docker.com/install/linux/docker-ce/debian/).
+1. Install [docker](https://docs.docker.com/install/linux/docker-ce/debian/).
 
-2 . Install [docker-compose](https://docs.docker.com/compose/install/).
+2. Install [docker-compose](https://docs.docker.com/compose/install/).
 
-3 . Donwload this pack and in this folder run:
+3. Donwload this pack and in this folder run:
 
 ```
 sudo docker-compose up -d
 ``` 
 
-4 . Add 127.0.0.1 web.local to your hosts file
+4. Add 127.0.0.1 web.local to your hosts file
 
-5 . Go to http://web.local
+5. Go to http://web.local
 
 # CLI use
 
