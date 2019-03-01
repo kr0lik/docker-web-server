@@ -25,23 +25,34 @@ $ make start
 6. Go to http://web.local
 
 
+# Mutiple projects
+1. Create folder with <project_name> in www
+
+2. Add 127.0.0.1 <project_name>.local to your hosts file
+
+
 # Help commands
 
-Stop docker: make stop
+Start docker: $ make start
 
-Show processes: make show
+Stop docker: $ make stop
 
-Run bash for php: make bash
+Resart docker: $ make restart
+
+Show processes: $ make show
+
+Run bash for php: $ make bash
 
 
 # CLI use
 
 Fist way:
 ```
-$ sudo docker run --rm -v $(pwd):/app -w /app php:cli php index.php
+$ make bash
 ```
 
 Second way:
 ```
-$ make bash
+$ sudo docker run --rm -v $(pwd):/app -w /app php:cli php index.php
 ```
+
