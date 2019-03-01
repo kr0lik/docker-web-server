@@ -20,6 +20,7 @@ services:
             - pgsql
         volumes:
             - ./www:/var/www/html
+            - ./logs:/var/log/php
     mysql:
         image: mysql:latest
         ports:

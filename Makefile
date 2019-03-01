@@ -6,6 +6,9 @@ start: #Start docker containers
 stop: #Stop docker containers
 	@docker-compose stop
 
+restart: #Restart docker containers
+	@docker-compose restart
+
 show: #Show docker containers
 	@docker ps
 
