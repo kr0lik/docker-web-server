@@ -39,7 +39,7 @@ Stop docker: $ make stop
 
 Resart docker: $ make restart
 
-Show processes: $ make show
+Show processes: $ make status
 
 Run bash for php: $ make bash
 
