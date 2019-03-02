@@ -19,6 +19,7 @@ services:
             - mysql
             - pgsql
         volumes:
+            - ./images/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
             - ./www:/var/www/html
             - ./logs:/var/log/php
     mysql:

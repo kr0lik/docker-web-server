@@ -7,7 +7,7 @@ RUN pecl install imagick xdebug apcu redis
 RUN docker-php-ext-enable xdebug
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-COPY php.ini /etc/php/7.1/fpm/conf.d/40-custom.ini
+#COPY www.conf /usr/local/etc/php-fpm.d/www.conf
 
 WORKDIR /var/www/html
 CMD ["php-fpm"]
