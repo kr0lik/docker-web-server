@@ -13,8 +13,8 @@ services:
         links:
             - php
     php:
-        image: "php:7.3-fpm"
-        #build: "./images/php"
+        #image: "php:7.3-fpm"
+        build: "./images/php"
         links:
             - mysql
             - pgsql

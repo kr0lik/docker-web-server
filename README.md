@@ -20,9 +20,18 @@ To install this server you need:
 $ make start
 ``` 
 
-5. Add 127.0.0.1 web.local to your hosts file
+5. Add 127.0.0.1 test.local to your hosts file
 
-6. Go to http://web.local
+6. Go to http://test.local
+
+
+# UsaGE
+
+1. Create filder in www for your project
+
+2. Add 127.0.0.1 <filder_name_of_your_project>.local to your hosts
+
+3. GO to http://<filder_name_of_your_project>.local
 
 
 # Mutiple projects
