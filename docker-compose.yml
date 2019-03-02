@@ -9,19 +9,21 @@ services:
         volumes:
             - ./hosts:/etc/nginx/conf.d
             - ./www:/var/www/html
-            - ./logs:/var/log/nginx
+            - ./logs:/var/log/app
         links:
             - php
     php:
-        #image: php:7.2-fpm
-        build: ./images/php
+        image: "php:7.3-fpm"
+        #build: "./images/php"
         links:
             - mysql
             - pgsql
+            - redis
+            - memcached
         volumes:
             - ./images/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
             - ./www:/var/www/html
-            - ./logs:/var/log/php
+            - ./logs:/var/log/app
     mysql:
         image: mysql:latest
         ports:
@@ -38,4 +40,17 @@ services:
             - ./pgsql:/var/lib/postgresql
         environment:
             POSTGRES_PASSWORD: local
-
+    adminer:
+        image: adminer
+        ports:
+            - "8080:8080"
+    redis:
+        image: redis:latest
+        ports:
+            - "6379:6379"
+        volumes:
+            - ./redis:/data
+    memcached:
+        image: memcached
+        ports:
+            - "11211:11211"
