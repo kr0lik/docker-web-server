@@ -25,7 +25,7 @@ $ make start
 6. Go to http://test.local
 
 
-# UsaGE
+# Usage
 
 1. Create filder in www for your project
 
