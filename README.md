@@ -11,7 +11,7 @@ To install this server you need:
 
 1. Install [docker](https://docs.docker.com/install/linux/docker-ce/debian/).
 
-2. [Manage Docker as a non-root user] https://docs.docker.com/install/linux/linux-postinstall/
+2. [Manage Docker as a non-root user](https://docs.docker.com/install/linux/linux-postinstall/)
 
 3. Install [docker-compose](https://docs.docker.com/compose/install/).
 
