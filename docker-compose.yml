@@ -25,13 +25,16 @@ services:
             - ./www:/var/www/html
             - ./logs:/var/log/app
     mysql:
-        image: mysql:latest
+        image: mariadb:latest
         ports:
             - "3306:3306"
+        user: "1000:50"
+        command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: local
+        restart: always
     pgsql:
         image: postgres:latest
         ports:
@@ -54,3 +57,4 @@ services:
         image: memcached
         ports:
             - "11211:11211"
+        restart: on-failure
