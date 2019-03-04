@@ -4,7 +4,7 @@ start: #Start docker containers
 	@docker-compose up -d
 
 stop: #Stop docker containers
-	@docker-compose stop
+	@docker-compose down
 
 restart: #Restart docker containers
 	@docker-compose restart
