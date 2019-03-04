@@ -34,12 +34,6 @@ $ make start
 3. GO to http://<filder_name_of_your_project>.local
 
 
-# Mutiple projects
-1. Create folder with <project_name> in www
-
-2. Add 127.0.0.1 <project_name>.local to your hosts file
-
-
 # Help commands
 
 Start docker: $ make start
