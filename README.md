@@ -27,11 +27,11 @@ $ make start
 
 # Usage
 
-1. Create filder in www for your project
+1. Create folder in www for your project
 
-2. Add 127.0.0.1 <filder_name_of_your_project>.local to your hosts
+2. Add 127.0.0.1 <folder_name_of_your_project>.local to your hosts
 
-3. GO to http://<filder_name_of_your_project>.local
+3. GO to http://<folder_name_of_your_project>.local
 
 
 # Help commands
