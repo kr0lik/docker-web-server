@@ -55,11 +55,32 @@ Run bash for go: $ make golang
 
 Fist way:
 ```
-$ make bash
+$ make php
 ```
 
 Second way:
 ```
+$ docker-compose run php bash
+```
+
+Third way:
+```
 $ sudo docker run --rm -v $(pwd):/app -w /app php:cli php index.php
 ```
 
+# GO
+
+First way:
+```
+$ make golang
+```
+
+Second way:
+```
+$ docker-compose run go go run <go_file in go folder>
+```
+
+Third way:
+```
+$ docker-compose run go bash
+```
