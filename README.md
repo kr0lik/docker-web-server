@@ -24,6 +24,8 @@ $ make start
 
 6. Go to http://test.local
 
+7. Go to http://localhost:90
+
 
 # Usage
 
@@ -44,7 +46,9 @@ Resart docker: $ make restart
 
 Show processes: $ make status
 
-Run bash for php: $ make bash
+Run bash for php: $ make php
+
+Run bash for go: $ make golang
 
 
 # CLI use

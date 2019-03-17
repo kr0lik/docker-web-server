@@ -24,6 +24,21 @@ services:
             - ./images/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
             - ./www:/var/www/html
             - ./logs:/var/log/app
+    go:
+        image: golang:latest
+        volumes:
+            - ./go:/go/app
+        working_dir: /go/app
+        ports:
+            - "90:80"
+        links:
+            - mysql
+            - pgsql
+            - redis
+            - memcached
+        environment:
+            PORT: 80
+        command: go run test/main.go
     mysql:
         image: mariadb:latest
         ports:
