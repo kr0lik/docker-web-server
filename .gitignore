@@ -3,3 +3,4 @@
 /pgsql/*
 /logs/*
 /redis/*
+/go/*
