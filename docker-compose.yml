@@ -16,8 +16,6 @@ services:
         #image: "php:7.3-fpm"
         build: "./images/php"
         links:
-            - mysql
-            - pgsql
             - redis
             - memcached
         volumes:
@@ -32,42 +30,50 @@ services:
         ports:
             - "90:80"
         links:
-            - mysql
-            - pgsql
             - redis
             - memcached
         environment:
             PORT: 80
         command: go run test/main.go
     mysql:
+        #image: mysql:latest
         image: mariadb:latest
         ports:
             - "3306:3306"
-        user: "1000:50"
+        links:
+            - adminer
+        user: "1000"
         command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
+        #command: '--default-authentication-plugin=mysql_native_password'
         volumes:
             - ./mysql:/var/lib/mysql
         environment:
-            MYSQL_ROOT_PASSWORD: local
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_ROOT_HOST: '%'
         restart: always
     pgsql:
         image: postgres:latest
         ports:
             - "5432:5432"
+        links:
+            - adminer
         volumes:
             - ./pgsql:/var/lib/postgresql
         environment:
-            POSTGRES_PASSWORD: local
+            POSTGRES_PASSWORD: postgres
+        restart: on-failure
     adminer:
-        image: adminer
+        image: adminer:latest
         ports:
             - "8080:8080"
+        restart: always
     redis:
         image: redis:latest
         ports:
             - "6379:6379"
         volumes:
             - ./redis:/data
+        restart: on-failure
     memcached:
         image: memcached
         ports:

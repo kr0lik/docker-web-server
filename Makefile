@@ -1,7 +1,7 @@
 docker_php = docker-web-server_php_1
 docker_go = docker-web-server_go_1
 
-start: #Start docker containers
+all: #Start docker containers
 	@docker-compose up -d
 
 stop: #Stop docker containers
@@ -12,6 +12,15 @@ restart: #Restart docker containers
 
 status: #Show docker containers
 	@docker ps
+
+mysqldb: #Start mysql db
+	@docker-compose up -d mysql
+
+pgsqldb: #Start pgsql db
+	@docker-compose up -d pgsql
+
+web: #Start web server
+	@docker-compose up -d nginx
 
 php: #Use bash commad line for php
 	@docker exec -it $(docker_php) bash

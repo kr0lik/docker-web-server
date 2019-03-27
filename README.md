@@ -38,13 +38,19 @@ $ make start
 
 # Help commands
 
-Start docker: $ make start
+Start all containers: $ make all
 
 Stop docker: $ make stop
 
-Resart docker: $ make restart
+Restart docker: $ make restart
 
 Show processes: $ make status
+
+Run web containers: $ make web
+
+Run MySql container + Adminer: $ make mysqldb
+
+Run PgSql container + Adminer: $ make pgsqldb
 
 Run bash for php: $ make php
 
