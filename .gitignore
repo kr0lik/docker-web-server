@@ -4,3 +4,5 @@
 /logs/*
 /redis/*
 /go/*
+/gitlab/*
+/composer/*

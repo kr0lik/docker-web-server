@@ -19,9 +19,9 @@ services:
             - redis
             - memcached
         volumes:
-            - ./images/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
             - ./www:/var/www/html
             - ./logs:/var/log/app
+            - ./composer:/root/.composer
     go:
         image: golang:latest
         volumes:
@@ -52,7 +52,8 @@ services:
             MYSQL_ROOT_HOST: '%'
         restart: always
     pgsql:
-        image: postgres:latest
+        #image: postgres:latest
+        build: "./images/pgsql"
         ports:
             - "5432:5432"
         links:
@@ -79,3 +80,7 @@ services:
         ports:
             - "11211:11211"
         restart: on-failure
+#volumes:
+#    pgsql:
+#        driver: local
+#        external: true

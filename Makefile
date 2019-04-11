@@ -22,6 +22,9 @@ pgsqldb: #Start pgsql db
 web: #Start web server
 	@docker-compose up -d nginx
 
+gitlab: #Start gitlab
+	@docker-compose up -d gitlab
+
 php: #Use bash commad line for php
 	@docker exec -it $(docker_php) bash
 
