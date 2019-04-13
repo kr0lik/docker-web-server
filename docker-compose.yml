@@ -10,12 +10,12 @@ services:
             - ./hosts:/etc/nginx/conf.d
             - ./www:/var/www/html
             - ./logs:/var/log/app
-        links:
+        depends_on:
             - php
     php:
         #image: "php:7.3-fpm"
         build: "./images/php"
-        links:
+        depends_on:
             - redis
             - memcached
         volumes:
@@ -29,7 +29,7 @@ services:
         working_dir: /go/app
         ports:
             - "90:80"
-        links:
+        depends_on:
             - redis
             - memcached
         environment:
@@ -40,7 +40,7 @@ services:
         image: mariadb:latest
         ports:
             - "3306:3306"
-        links:
+        depends_on:
             - adminer
         user: "1000"
         command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
@@ -56,10 +56,11 @@ services:
         build: "./images/pgsql"
         ports:
             - "5432:5432"
-        links:
+        depends_on:
             - adminer
         volumes:
-            - ./pgsql:/var/lib/postgresql
+#            - ./pgsql:/var/lib/postgresql/data
+            - pgdata:/var/lib/postgresql/data
         environment:
             POSTGRES_PASSWORD: postgres
         restart: on-failure
@@ -80,7 +81,7 @@ services:
         ports:
             - "11211:11211"
         restart: on-failure
-#volumes:
-#    pgsql:
+volumes:
+    pgdata:
 #        driver: local
-#        external: true
+        external: true

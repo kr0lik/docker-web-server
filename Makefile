@@ -8,7 +8,7 @@ stop: #Stop docker containers
 	@docker-compose stop
 
 down: #Down docker containers
-        @docker-compose down
+	@docker-compose down
 
 restart: #Restart docker containers
 	@docker-compose restart
