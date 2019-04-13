@@ -1,5 +1,6 @@
 docker_php = docker-web-server_php_1
 docker_go = docker-web-server_go_1
+docker_nginx = docker-web-server_nginx_1
 
 all: #Start docker containers
 	@docker-compose up -d
@@ -22,14 +23,17 @@ mysqldb: #Start mysql db
 pgsqldb: #Start pgsql db
 	@docker-compose up -d pgsql
 
+golang: #Start golang
+	@docker-compose up -d go
+
 web: #Start web server
 	@docker-compose up -d nginx
 
-gitlab: #Start gitlab
-	@docker-compose up -d gitlab
+bash_nginx: #Use bash commad line for nginx
+	@docker exec -it $(docker_nginx) bash
 
-php: #Use bash commad line for php
+bash_php: #Use bash commad line for php
 	@docker exec -it $(docker_php) bash
 
-golang: #Use bash commad line for go
+bash_go: #Use bash commad line for go
 	@docker exec -it $(docker_go) bash

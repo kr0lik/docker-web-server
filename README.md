@@ -42,6 +42,8 @@ Start all containers: $ make all
 
 Stop docker: $ make stop
 
+Down docker: $ make down
+
 Restart docker: $ make restart
 
 Show processes: $ make status
@@ -52,10 +54,13 @@ Run MySql container + Adminer: $ make mysqldb
 
 Run PgSql container + Adminer: $ make pgsqldb
 
-Run bash for php: $ make php
+Run Go: $ make golang
 
-Run bash for go: $ make golang
+Run bash for php: $ make bash_php
 
+Run bash for go: $ make bash_go
+
+Run bash for nginx $ make bash_nginx
 
 # CLI use
 
