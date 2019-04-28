@@ -2,6 +2,7 @@ version: '3'
 
 services:
     nginx:
+        container_name: my-nginx
         image: nginx:latest
         ports:
             - "80:80"
@@ -12,7 +13,10 @@ services:
             - ./logs:/var/log/app
         depends_on:
             - php
+        networks:
+            - internal
     php:
+        container_name: my-php
         #image: "php:7.3-fpm"
         build: "./images/php"
         depends_on:
@@ -21,11 +25,20 @@ services:
         volumes:
             - ./www:/var/www/html
             - ./logs:/var/log/app
-            - ./composer:/root/.composer
+            - ./data/composer:/root/.composer
+        environment:
+            PHP_IDE_CONFIG: "serverName=docker-server"
+            PHP_XDEBUG_ENABLED: 1
+            #XDEBUG_CONFIG: remote_host=10.254.254.254
+            XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+        networks:
+            - internal
     go:
+        container_name: my-go
         image: golang:latest
         volumes:
             - ./go:/go/app
+            - ./logs:/logs
         working_dir: /go/app
         ports:
             - "90:80"
@@ -34,8 +47,11 @@ services:
             - memcached
         environment:
             PORT: 80
-        command: go run test/main.go
+        command: go run test/main.go >> /logs/go.log
+        networks:
+            - internal
     mysql:
+        container_name: my-mysql
         #image: mysql:latest
         image: mariadb:latest
         ports:
@@ -46,12 +62,15 @@ services:
         command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
         #command: '--default-authentication-plugin=mysql_native_password'
         volumes:
-            - ./mysql:/var/lib/mysql
+            - ./data/mysql:/var/lib/mysql
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_ROOT_HOST: '%'
         restart: always
+        networks:
+            - internal
     pgsql:
+        container_name: my-pgsql
         #image: postgres:latest
         build: "./images/pgsql"
         ports:
@@ -59,28 +78,61 @@ services:
         depends_on:
             - adminer
         volumes:
-#            - ./pgsql:/var/lib/postgresql/data
+#            - ./data/pgsql:/var/lib/postgresql/data
             - pgdata:/var/lib/postgresql/data
         environment:
             POSTGRES_PASSWORD: postgres
         restart: on-failure
+        networks:
+            - internal
     adminer:
+        container_name: my-adminer
         image: adminer:latest
         ports:
-            - "8080:8080"
+            - "127.0.0.1:70:8080"
         restart: always
+        networks:
+            - internal
     redis:
+        container_name: my-redis
         image: redis:latest
         ports:
             - "6379:6379"
         volumes:
-            - ./redis:/data
+            - ./data/redis:/data
         restart: on-failure
+        networks:
+            - internal
     memcached:
+        container_name: my-memcached
         image: memcached
         ports:
             - "11211:11211"
         restart: on-failure
+        networks:
+            - internal
+    portainer:
+        container_name: my-portainer
+        image: portainer/portainer
+        command: -H unix:///var/run/docker.sock
+        restart: always
+        ports:
+            - 7000:9000
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ./data/portainerdata:/data
+        networks:
+            - internal
+      
+networks:
+    internal:
+        driver: bridge
+        ipam:
+            driver: default
+            config:
+                - subnet: 192.168.220.0/28
+            
+# For postgres on wsl
 volumes:
     pgdata:
 #        driver: local

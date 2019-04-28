@@ -31,7 +31,9 @@ $ make start
 
 1. Create folder in www for your project
 
-2. Add 127.0.0.1 <folder_name_of_your_project>.local to your hosts
+2-1. Add 127.0.0.1 <folder_name_of_your_project>.local to your hosts
+
+2-2. You can cretae your own nginx config in hosts folder
 
 3. GO to http://<folder_name_of_your_project>.local
 
@@ -61,6 +63,8 @@ Run bash for php: $ make bash_php
 Run bash for go: $ make bash_go
 
 Run bash for nginx $ make bash_nginx
+
+Run portainer: $ make portainer
 
 # CLI use
 

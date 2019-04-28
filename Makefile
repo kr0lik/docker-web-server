@@ -1,6 +1,6 @@
-docker_php = docker-web-server_php_1
-docker_go = docker-web-server_go_1
-docker_nginx = docker-web-server_nginx_1
+docker_php = my-php
+docker_go = my-go
+docker_nginx = my-nginx
 
 all: #Start docker containers
 	@docker-compose up -d
@@ -28,6 +28,9 @@ golang: #Start golang
 
 web: #Start web server
 	@docker-compose up -d nginx
+
+portainer: #Start portainer
+	@docker-compose up -d portainer
 
 bash_nginx: #Use bash commad line for nginx
 	@docker exec -it $(docker_nginx) bash

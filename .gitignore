@@ -1,9 +1,5 @@
 /www/*
-/mysql/*
-/pgsql/*
+/data/*
 /logs/*
-/redis/*
 /go/*
-/gitlab/*
-/composer/*
 /hosts/*
