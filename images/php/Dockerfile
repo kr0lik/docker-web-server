@@ -15,10 +15,5 @@ RUN docker-php-ext-enable xdebug apcu memcached
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && composer global require "fxp/composer-asset-plugin:^1.3.1"
 
-COPY docker.conf /usr/local/etc/php-fpm.d/docker.conf
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
-
-ENV serverName=docker-server
-
 WORKDIR /var/www/html
 CMD ["php-fpm"]

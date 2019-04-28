@@ -8,7 +8,7 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./hosts:/etc/nginx/conf.d
+            - ./configs/nginx:/etc/nginx/conf.d
             - ./www:/var/www/html
             - ./logs:/var/log/app
         depends_on:
@@ -23,14 +23,16 @@ services:
             - redis
             - memcached
         volumes:
+            - ./configs/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
+            - ./configs/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
             - ./www:/var/www/html
             - ./logs:/var/log/app
             - ./data/composer:/root/.composer
         environment:
             PHP_IDE_CONFIG: "serverName=docker-server"
             PHP_XDEBUG_ENABLED: 1
-            #XDEBUG_CONFIG: remote_host=10.254.254.254
-            XDEBUG_CONFIG: "remote_host=host.docker.internal remote_enable=1"
+            # For wsl:
+            XDEBUG_CONFIG: "remote_host=host.docker.internal"
         networks:
             - internal
     go:
