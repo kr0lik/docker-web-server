@@ -25,6 +25,9 @@ pgsqldb: #Start pgsql db
 
 golang: #Start golang
 	@docker-compose up -d go
+	
+rabbitmq: #Start rabbitMQ
+	@docker-compose up -d rabbitmq
 
 web: #Start web server
 	@docker-compose up -d nginx

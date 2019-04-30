@@ -58,6 +58,8 @@ Run PgSql container + Adminer: $ make pgsqldb
 
 Run Go: $ make golang
 
+Run RabbitMQ: $ make rabbitmq
+
 Run bash for php: $ make bash_php
 
 Run bash for go: $ make bash_go

@@ -113,6 +113,17 @@ services:
         restart: on-failure
         networks:
             - internal
+    rabbitmq:
+        image: bitnami/rabbitmq:latest
+        environment:
+            - RABBITMQ_USERNAME=rabbitmq
+            - RABBITMQ_PASSWORD=rabbitmq
+            - RABBITMQ_VHOST=/
+        ports:
+            - "15672:15672"
+            - "5672:5672"
+        networks:
+            - internal
     portainer:
         container_name: my-portainer
         image: portainer/portainer
