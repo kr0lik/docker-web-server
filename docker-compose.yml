@@ -114,6 +114,7 @@ services:
         networks:
             - internal
     rabbitmq:
+        container_name: my-rabbit
         image: bitnami/rabbitmq:latest
         environment:
             - RABBITMQ_USERNAME=rabbitmq
