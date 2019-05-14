@@ -72,7 +72,7 @@ Run portainer: $ make portainer
 
 Fist way:
 ```
-$ make php
+$ make bash_php
 ```
 
 Second way:
