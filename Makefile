@@ -1,6 +1,5 @@
-docker_php = my-php
-docker_go = my-go
-docker_nginx = my-nginx
+docker_php = my-web-php
+docker_go = my-web-go
 
 all: #Start docker containers
 	@docker-compose up -d
@@ -14,14 +13,14 @@ down: #Down docker containers
 restart: #Restart docker containers
 	@docker-compose restart
 
-status: #Show docker containers
-	@docker ps
+web: #Start web server
+	@docker-compose up -d nginx php
 
-mysqldb: #Start mysql db
-	@docker-compose up -d mysql
+mysql: #Start mysql db
+	@docker-compose up -d mysql adminer
 
-pgsqldb: #Start pgsql db
-	@docker-compose up -d pgsql
+pgsql: #Start pgsql db
+	@docker-compose up -d pgsql adminer
 
 golang: #Start golang
 	@docker-compose up -d go
@@ -29,17 +28,17 @@ golang: #Start golang
 rabbitmq: #Start rabbitMQ
 	@docker-compose up -d rabbitmq
 
-web: #Start web server
-	@docker-compose up -d nginx
+redis: #Start redis
+	@docker-compose up -d redis
+
+memcached: #Start memcached
+	@docker-compose up -d memcached
 
 portainer: #Start portainer
 	@docker-compose up -d portainer
 
-bash_nginx: #Use bash commad line for nginx
-	@docker exec -it $(docker_nginx) bash
-
 bash_php: #Use bash commad line for php
-	@docker exec -it $(docker_php) bash
+	@docker exec -it $(docker_php) sh
 
-bash_go: #Use bash commad line for go
-	@docker exec -it $(docker_go) bash
+bash_golang: #Use bash commad line for go
+	@docker exec -it $(docker_go) sh

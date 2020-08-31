@@ -2,152 +2,153 @@ version: '3'
 
 services:
     nginx:
-        container_name: my-nginx
-        image: nginx:latest
+        container_name: my-web-nginx
+        image: nginx:alpine
         ports:
             - "80:80"
             - "443:443"
         volumes:
-            - ./configs/nginx:/etc/nginx/conf.d
-            - ./www:/var/www/html
-            - ./logs:/var/log/app
+            - ./docker/images/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./docker/images/nginx/conf.d:/etc/nginx/conf.d
+            - ./docker/images/nginx/ssl:/etc/nginx/ssl
+            - ./projects-php:/projects
+            - ./projects-js:/usr/share/nginx/html
+            - ./logs:/var/log/www
         depends_on:
-            - php
-        networks:
-            - internal
+          - php
+        restart: always
     php:
-        container_name: my-php
-        #image: "php:7.3-fpm"
-        build: "./images/php"
-        depends_on:
-            - redis
-            - memcached
+        container_name: my-web-php
+        build: "./docker/images/php"
         volumes:
-            - ./configs/php/docker.conf:/usr/local/etc/php-fpm.d/docker.conf
-            - ./configs/php/xdebug.ini:/usr/local/etc/php/conf.d/xdebug.ini
-            - ./www:/var/www/html
-            - ./logs:/var/log/app
-            - ./data/composer:/root/.composer
-        environment:
-            PHP_IDE_CONFIG: "serverName=docker-server"
-            PHP_XDEBUG_ENABLED: 1
-            # For wsl:
-            XDEBUG_CONFIG: "remote_host=host.docker.internal"
-        networks:
-            - internal
+            - ./projects-php:/projects
+            - ./logs:/var/log/www
+        env_file:
+            - .env
+        restart: always
     go:
-        container_name: my-go
-        image: golang:latest
+        container_name: my-web-go
+        image: golang:alpine
         volumes:
-            - ./go:/go/app
+            - ./projects-golang:/go/app
             - ./logs:/logs
         working_dir: /go/app
         ports:
             - "90:80"
-        depends_on:
-            - redis
-            - memcached
         environment:
             PORT: 80
         command: go run test/main.go >> /logs/go.log
-        networks:
-            - internal
     mysql:
-        container_name: my-mysql
-        #image: mysql:latest
-        image: mariadb:latest
+        container_name: my-web-mysql
+        image: yobasystems/alpine-mariadb
         ports:
             - "3306:3306"
-        depends_on:
-            - adminer
-        user: "1000"
-        command: mysqld --innodb-flush-method=littlesync --innodb-use-native-aio=OFF --log_bin=ON
-        #command: '--default-authentication-plugin=mysql_native_password'
         volumes:
-            - ./data/mysql:/var/lib/mysql
+            - ./docker/images/mysql/my.cnf:/etc/my.cnf.d/my.cnf
+            - ./docker/images/mysql/bin/:/scripts/pre-exec.d/
+            - mysqldata:/var/lib/mysql
+            - ./logs:/var/log/www
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_ROOT_HOST: '%'
         restart: always
-        networks:
-            - internal
     pgsql:
-        container_name: my-pgsql
-        #image: postgres:latest
-        build: "./images/pgsql"
+        container_name: my-web-pgsql
+        build: "./docker/images/pgsql"
         ports:
             - "5432:5432"
-        depends_on:
-            - adminer
         volumes:
-#            - ./data/pgsql:/var/lib/postgresql/data
-            - pgdata:/var/lib/postgresql/data
+            - pgsqldata:/var/lib/postgresql/data
         environment:
+            POSTGRES_USER: postgres
             POSTGRES_PASSWORD: postgres
-        restart: on-failure
-        networks:
-            - internal
-    adminer:
-        container_name: my-adminer
-        image: adminer:latest
-        ports:
-            - "127.0.0.1:70:8080"
+            TZ: "Europe/Moscow"
+            PGTZ: "Europe/Moscow"
+            restart: always
         restart: always
-        networks:
-            - internal
+    adminer:
+        container_name: my-web-adminer
+        image: adminer
+        ports:
+            - "7000:8080"
+        environment:
+            ADMINER_PLUGINS: tables-filter table-structure table-indexes-structure struct-comments json-column enum-types enum-option edit-foreign dump-zip tinymce
+            TZ: "Europe/Moscow"
+        restart: always
     redis:
-        container_name: my-redis
-        image: redis:latest
+        container_name: my-web-redis
+        image: redis:alpine
         ports:
             - "6379:6379"
         volumes:
-            - ./data/redis:/data
-        restart: on-failure
-        networks:
-            - internal
+            - ./docker/data/redis:/data
+        environment:
+            TZ: "Europe/Moscow"
+        restart: always
+#    redisui:
+#        container_name: my-web-redis-ui
+#        image: rediscommander/redis-commander
+#        environment:
+#            - REDIS_HOSTS=local:redis:6379
+#        ports:
+#            - "8081:8081"
+#        restart: always
     memcached:
-        container_name: my-memcached
-        image: memcached
+        container_name: my-web-memcached
+        image: memcached:alpine
         ports:
             - "11211:11211"
-        restart: on-failure
-        networks:
-            - internal
+        restart: always
     rabbitmq:
-        container_name: my-rabbit
-        image: bitnami/rabbitmq:latest
+        container_name: my-web-rabbitmq
+        image: rabbitmq:management-alpine
         environment:
-            - RABBITMQ_USERNAME=rabbitmq
-            - RABBITMQ_PASSWORD=rabbitmq
-            - RABBITMQ_VHOST=/
+            RABBITMQ_DEFAULT_USER: rabbitmq
+            RABBITMQ_DEFAULT_PASS: rabbitmq
+            RABBITMQ_DEFAULT_VHOST: /
         ports:
             - "15672:15672"
             - "5672:5672"
-        networks:
-            - internal
+        restart: always
+#    elasticsearch:
+#        container_name: my-web-elasticsearch
+#        image: blacktop/elasticsearch
+#        ports:
+#            - "9200:9200"
+#        restart: always
+#    kibana:
+#        container_name: my-web-kibana
+#        image: blacktop/kibana
+#        depends_on:
+#            - elasticsearch
+#        links:
+#            - elasticsearch
+#        environment:
+#            KIBANA_ELASTICSEARCH_USERNAME: kibana
+#            KIBANA_ELASTICSEARCH_PASSWORD: kibana
+#        ports:
+#            - "5601:5601"
+#        restart: always
+#    nodejs:
+#        container_name: my-web-nodejs
+#        image: node:alpine
+#        volumes:
+#            - ./projects-node:/app
+#        working_dir: /app
     portainer:
-        container_name: my-portainer
+        container_name: my-web-portainer
         image: portainer/portainer
         command: -H unix:///var/run/docker.sock
         restart: always
         ports:
-            - 7000:9000
+            - "9000:9000"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./data/portainerdata:/data
-        networks:
-            - internal
-      
-networks:
-    internal:
-        driver: bridge
-        ipam:
-            driver: default
-            config:
-                - subnet: 192.168.220.0/28
-            
+            - ./docker/data/portainer:/data
+
 # For postgres on wsl
 volumes:
-    pgdata:
-#        driver: local
-        external: true
+    pgsqldata:
+        driver: local
+    mysqldata:
+        driver: local
