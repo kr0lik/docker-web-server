@@ -8,21 +8,19 @@ services:
             - "80:80"
             - "443:443"
         volumes:
-            - ./docker/images/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - ./docker/images/nginx/conf.d:/etc/nginx/conf.d
-            - ./docker/images/nginx/ssl:/etc/nginx/ssl
+            - ./images/nginx/nginx.conf:/etc/nginx/nginx.conf
+            - ./images/nginx/conf.d:/etc/nginx/conf.d
+            - ./images/nginx/ssl:/etc/nginx/ssl
             - ./projects-php:/projects
             - ./projects-js:/usr/share/nginx/html
-            - ./logs:/var/log/www
         depends_on:
           - php
         restart: always
     php:
         container_name: my-web-php
-        build: "./docker/images/php"
+        build: "./images/php"
         volumes:
             - ./projects-php:/projects
-            - ./logs:/var/log/www
         env_file:
             - .env
         restart: always
@@ -31,30 +29,28 @@ services:
         image: golang:alpine
         volumes:
             - ./projects-golang:/go/app
-            - ./logs:/logs
         working_dir: /go/app
         ports:
             - "90:80"
         environment:
             PORT: 80
-        command: go run test/main.go >> /logs/go.log
+        command: go run test/main.go >> /proc/self/fd/2
     mysql:
         container_name: my-web-mysql
         image: yobasystems/alpine-mariadb
         ports:
             - "3306:3306"
         volumes:
-            - ./docker/images/mysql/my.cnf:/etc/my.cnf.d/my.cnf
-            - ./docker/images/mysql/bin/:/scripts/pre-exec.d/
+            - ./images/mysql/my.cnf:/etc/my.cnf.d/my.cnf
+            - ./images/mysql/bin/:/scripts/pre-exec.d/
             - mysqldata:/var/lib/mysql
-            - ./logs:/var/log/www
         environment:
             MYSQL_ROOT_PASSWORD: root
             MYSQL_ROOT_HOST: '%'
         restart: always
     pgsql:
         container_name: my-web-pgsql
-        build: "./docker/images/pgsql"
+        build: "./images/pgsql"
         ports:
             - "5432:5432"
         volumes:
@@ -81,7 +77,7 @@ services:
         ports:
             - "6379:6379"
         volumes:
-            - ./docker/data/redis:/data
+            - ./data/redis:/data
         environment:
             TZ: "Europe/Moscow"
         restart: always
@@ -144,7 +140,7 @@ services:
             - "9000:9000"
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
-            - ./docker/data/portainer:/data
+            - ./data/portainer:/data
 
 # For postgres on wsl
 volumes:

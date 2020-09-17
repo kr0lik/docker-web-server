@@ -1,10 +1,9 @@
 /projects-php/*
 /projects-golang/*
-/docker/data/*
-/docker/images/mysql/bin/*
-/docker/images/nginx/conf.d/*
-/docker/images/pgsql/bin/*
-/docker/images/php/php-fpm.d/*
-/logs/*
+/data/*
+/images/mysql/bin/*
+/images/nginx/conf.d/*
+/images/pgsql/bin/*
+/images/php/php-fpm.d/*
 /.idea/
 /.env
